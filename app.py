@@ -56,8 +56,10 @@ def pod():
     tdate = request.args.get('date')
     if tdate == None:
         tdate = str(date.today())
-    #Check for error
     info = get_img(tdate)
+    #Check for error
+    if info == 1:
+        return render_template('error_404.html'),404
     url = info[2]
     title = info[1]
     expl = info[0]

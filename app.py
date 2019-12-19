@@ -8,6 +8,7 @@ import requests
 import json
 import wget
 import traceback
+import os
 
 #Global Vars
 NASA_URL = "https://api.nasa.gov/planetary/apod?api_key=DlArxIrdbCsDiAB2mA6Jo4m0PBFrWut8VSnkAQDe"
@@ -49,7 +50,7 @@ def create_pdf(title, tdate, desc):
     pdf.set_font("Arial", size=12)
     pdf.cell(200, 10, txt=title, ln=1, align="C")
     pdf.ln(95)
-    pdf.image(name = dpath ,x=55, y=20, h=100, w=100)
+    pdf.image(name = dpath ,x=55, y=20, h=100)
     pdf.ln()
     pdf.set_font("Arial", size=12)
     pdf.multi_cell(0, 5, desc, align="C")
@@ -58,6 +59,13 @@ def create_pdf(title, tdate, desc):
 #Main Program starts here
 
 app = Flask(__name__)
+
+@app.before_first_request
+def check_dir():
+    if path.exists("./downloaded_files") == False:
+        print("Creating downloaded_files")
+        os.system("mkdir ./downloaded_files")
+
 
 #Default Route
 @app.route('/') 
@@ -79,7 +87,7 @@ def pod():
     expl = info[0]
     img_download = "/download_img?date=" + tdate
     pdf_download = "/download_pdf?date=" + tdate
-    return render_template('details.html', title=title, desc=expl, img_url=url, pdf_download_url = pdf_download, img_download_url = img_download)
+    return render_template('details.html', title=title, desc=expl, img_url=url, pdf_download_url = pdf_download, img_download_url = img_download, tdate=tdate)
 
 #Downloads the Image
 @app.route('/download_img')

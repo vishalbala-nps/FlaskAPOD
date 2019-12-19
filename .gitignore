@@ -1,1 +1,2 @@
-downloaded_files/**
+downloaded_files/*.jpg
+downloaded_files/*.pdf

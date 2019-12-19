@@ -2,4 +2,4 @@ Flask==1.1.1
 wget==3.2
 fpdf==1.7.2
 requests==2.22.0
-
+#gunicorn==19.7.1

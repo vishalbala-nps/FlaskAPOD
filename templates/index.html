@@ -1,14 +1,44 @@
-<html>
-    <head>
-        <title>Astronomy Picture of the day</title>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Flask-APOD</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
 
-    <body>
-        <h1>Welcome</h1>
-        <p>Pick a date for retreving the image of the day</p>
-        <form action="/pod?" method="GET">
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Flask-APOD</a>
+    </div>
+  </div>
+</nav>
+
+  <div class="jumbotron text-center">
+        <h1>NASA Picture Of The Day</h1>
+        <p>Pick a date for retreving the NASA Astronomy Picture Of The Day</p>
+    
+        <form action="/pod" method="GET">
             Date: <input type="date" name="date" value="2019-01-01">
-            <input type="submit">
-          </form>
-    </body>
+            <input type="submit" value="Submit">
+        </form>
+  </div>
+  
+<div class="container text-center">
+    <h1>About the project</h1>
+    <h4>This is a simple Flask Web App written in Python. Based on the date, the app talks to NASA's APOD Api and gets the Astronomy Picture of the day</h4>
+</div>
+
+<footer class="footer bg-primary navbar-fixed-bottom">
+        <div class="container text-center">
+          <small>Developed by Vishal Balasubramanian</small>
+        </div>
+</footer>
+
+</body>
 </html>

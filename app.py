@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, send_file
 from os import path
 from time import sleep
 from datetime import date
+from fpdf import FPDF
 
 import requests
 import json
@@ -40,7 +41,20 @@ def download_image(img_url, tdate):
     except Exception:
         traceback.print_exc()
         return 1
-    
+
+def create_pdf(title, tdate, desc):
+    pdf = FPDF()
+    dpath = "./downloaded_files/"+tdate+".jpg"
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt=title, ln=1, align="C")
+    pdf.ln(95)
+    pdf.image(name = dpath ,x=55, y=20, h=100, w=100)
+    pdf.ln()
+    pdf.set_font("Arial", size=12)
+    pdf.multi_cell(0, 5, desc, align="C")
+    pdf.output("./downloaded_files/"+tdate+".pdf")
+
 #Main Program starts here
 
 app = Flask(__name__)
@@ -81,6 +95,29 @@ def download_img():
             return send_file("./downloaded_files/"+tdate+".jpg", as_attachment=True)
     else:
         return send_file("./downloaded_files/"+tdate+".jpg", as_attachment=True)
+
+#Downloads the PDF
+@app.route('/download_pdf')
+def download_pdf():
+    tdate = request.args.get('date')
+    img_info = get_img(tdate)
+    url = img_info[2]
+    exp = img_info[0]
+    title = img_info[1]
+    if path.exists("./downloaded_files/"+tdate+".pdf") == False:
+
+        if path.exists("./downloaded_files/"+tdate+".jpg") == False:
+            rcode = download_image(url, tdate)
+            if rcode != 0:
+                return render_template("error.html"), 500
+            else:
+                create_pdf(title, tdate, exp)
+                return send_file("./downloaded_files/"+tdate+".pdf", as_attachment=True)
+        else:
+            create_pdf(title, tdate, exp)
+            return send_file("./downloaded_files/"+tdate+".pdf", as_attachment=True)
+    else:
+        return send_file("./downloaded_files/"+tdate+".pdf", as_attachment=True)
 
 
 if __name__ == '__main__':

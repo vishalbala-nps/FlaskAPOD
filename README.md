@@ -1,2 +1,2 @@
 # FlaskAPOD
-A simple flask app to communicate with NASA's APOD API
+A simple flask app to communicate with NASA's APOD API written in Python

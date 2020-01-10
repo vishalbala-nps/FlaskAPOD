@@ -9,6 +9,7 @@ import json
 import wget
 import traceback
 import os
+import mimetypes
 
 #Global Vars
 NASA_URL = "https://api.nasa.gov/planetary/apod?api_key=DlArxIrdbCsDiAB2mA6Jo4m0PBFrWut8VSnkAQDe"
@@ -32,10 +33,15 @@ def get_img(tdate):
         title = response['title']
         web_url = response['url']
 
-        return (exp,title,web_url)
+        mimetype,encoding = mimetypes.guess_type(web_url)
+        if mimetype == None:
+            isvideo = True
+        else:
+            isvideo = False
+
+        return (exp,title,web_url,isvideo)
 
 def download_image(img_url, tdate):
-
     try:
         wget.download(img_url, 'downloaded_files/'+tdate+'.jpg')
         return 0
@@ -85,9 +91,10 @@ def pod():
     url = info[2]
     title = info[1]
     expl = info[0]
+    isvideo = info[3]
     img_download = "/download_img?date=" + tdate
     pdf_download = "/download_pdf?date=" + tdate
-    return render_template('details.html', title=title, desc=expl, img_url=url, pdf_download_url = pdf_download, img_download_url = img_download, tdate=tdate)
+    return render_template('details.html', title=title, desc=expl, img_url=url, pdf_download_url = pdf_download, img_download_url = img_download, tdate=tdate, isvideo=isvideo)
 
 #Downloads the Image
 @app.route('/download_img')

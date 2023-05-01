@@ -1,4 +1,4 @@
-Flask==1.1.1
+Flask==2.3.2
 wget==3.2
 fpdf==1.7.2
 requests==2.22.0
